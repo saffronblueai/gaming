@@ -1,9 +1,9 @@
-from Gaming.Table import Table
-from Gaming.Player import Player
+from Table import Table
+from Player import Player
 from pandas import DataFrame
 from pandas import Timestamp
 import pandas as pd
-from Gaming.Utilities import Log_Level
+from Utilities import Log_Level
 import numpy as np
 
 # set display right

@@ -1,9 +1,9 @@
 import random, json, math, logging
 from enum import Enum
-from Gaming.Deck import Get_Score
-from Gaming.Utilities import Player_Status
-from Gaming.Utilities import Log_Level
-from Gaming.Utilities import convert_card
+from Deck import Get_Score
+from Utilities import Player_Status
+from Utilities import Log_Level
+from Utilities import convert_card
 """
 Title:     Player.py
 Author:    Wilson Chan

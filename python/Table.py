@@ -1,8 +1,8 @@
-from Gaming.Deck import Shoe
-from Gaming.Player import Player
-from Gaming.Deck import Get_Score
-from Gaming.Utilities import Player_Status
-from Gaming.Utilities import Log_Level
+from Deck import Shoe
+from Player import Player
+from Deck import Get_Score
+from Utilities import Player_Status
+from Utilities import Log_Level
 from pandas import Timestamp,Timedelta,set_option, DataFrame
 import numpy as np
 
