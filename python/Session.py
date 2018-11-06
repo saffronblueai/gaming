@@ -42,8 +42,8 @@ if __name__ == "__main__":
 
     players = []
 
-    [players.append(Player(id="s%s"%i, type=Player.SENSIBLE, report = report)) for i in range(number_of_sensible)]
-    [players.append(Player(id="s%s"%i, type=Player.RISKY, report = report)) for i in range(number_of_risky)]
+    # [players.append(Player(id="s%s"%i, type=Player.SENSIBLE, report = report)) for i in range(number_of_sensible)]
+    [players.append(Player(id="r%s"%i, type=Player.RISKY, report = report)) for i in range(number_of_risky)]
 
     print("total number of players:%s"%len(players))
     print("\033[4massembling tables\033[0m")
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     """
     audit
     """
-    [table.set_log_level(player_level=Log_Level.SESSION, dealer_level=Log_Level.NONE) for table in tables]
+    [table.set_log_level(player_level=Log_Level.NONE, dealer_level=Log_Level.NONE) for table in tables]
 
     """
     play
@@ -75,6 +75,8 @@ if __name__ == "__main__":
 
     df = DataFrame(data=report,columns="table player game_count action table_score bet bonus bonus_at win_amount table_balance leave".split())
     df = df.replace(np.nan, '', regex=True)
-    # print(df.tail(150))
 
+    for player in df["player"].unique():
+        print(df[df["player"]==player])
+        exit()
 
