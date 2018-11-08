@@ -1,15 +1,22 @@
 from Deck import Shoe
-from Player import Player
-from Deck import Get_Score
+from Deck import get_score
+from Deck import get_real_score
 from Utilities import Player_Status
 from Utilities import Log_Level
 from pandas import Timestamp,Timedelta,set_option, DataFrame
-import numpy as np
 
 set_option('display.width', 500)
 set_option("display.max_columns", 10)
 score_chart={12:1,13:2,14:3,15:4,16:5,17:6,18:7,19:8,20:9,21:10}
 
+
+"""
+Title:     Table.py
+Author:    Wilson Chan / Saffron Blue Ltd
+Description:   Class definition for blackjack table
+Created:       1/1/18
+Last Modified: 8/11/18
+"""
 
 class Table:
 
@@ -36,6 +43,7 @@ class Table:
         self.game_count = 0
         self.games_since_last_shoe = 0
         self.score = 0
+        self.real_score = 0
         self.cards = []
         self.start_time = dt
         self.time = dt
@@ -103,7 +111,7 @@ class Table:
         """
         card = shoe.deal(1)
         self.cards.extend(card)
-        self.score = Get_Score(self.cards)
+        self.score = get_score(self.cards)
 
         show = True if self.log_level >= Log_Level.GAME else False
 
@@ -153,7 +161,8 @@ class Table:
         shoe = self.shoe
         while self.score<=16:
             self.cards.extend(shoe.deal(1))
-            self.score = Get_Score(self.cards)
+            self.score = get_score(self.cards)
+            self.real_score = get_real_score(self.cards)
 
             show = True if self.log_level >= Log_Level.GAME else False
 
@@ -164,7 +173,7 @@ class Table:
         payouts
         """
         for index, player in enumerate(self.players):
-            if not player.pay_out(self.score,self.games_since_last_shoe, self.time):
+            if not player.pay_out(self.score,self.real_score,self.games_since_last_shoe, self.time, self.games_since_last_shoe):
                 show = True if self.log_level >= Log_Level.GAME else False
                 self.log_output("removing player : %s" % player.id, show)
                 self.players.remove(player)

@@ -1,14 +1,14 @@
-import random, json, math, logging
-from enum import Enum
-from Deck import Get_Score
+from Deck import get_score
+from Deck import get_real_score
 from Utilities import Player_Status
 from Utilities import Log_Level
 from Utilities import convert_card
 """
 Title:     Player.py
-Author:    Wilson Chan
-Descrip:   Class for BlackJack Player
-           -  Can only play single table at a time
+Author:    Wilson Chan / Saffron Blue Ltd
+Description:   Class definition for BlackJack Player
+Created:       1/1/18
+Last Modified: 8/11/18
 """
 score_chart={12:1,13:2,14:3,15:4,16:5,17:6,18:7,19:8,20:9,21:10}
 
@@ -51,6 +51,7 @@ class Player:
         self.win = 0
         self.wins = []
         self.score = 0
+        self.real_score = 0
         self.log_level = Log_Level.NONE
 
         self.action = ""  # "TWIST" / "STICK"
@@ -156,8 +157,8 @@ class Player:
         """
         self.cards.extend(cards)
         self.status = Player_Status.RECEIVE_FIRST_CARD
-        self.score = Get_Score(self.cards)
-
+        self.score = get_score(self.cards)
+        self.real_score = get_real_score(self.cards)
         show = True if self.log_level >= Log_Level.GAME else False
 
         self.log_output("RECEIVE cards %s score %s" % (str([convert_card(card) for card in self.cards]), self.score),show)
@@ -191,7 +192,7 @@ class Player:
         self.log_output("ACTION :  %s" % self.action.lower(),show)
         return self.action
 
-    def pay_out(self, table_score, game_count, table_time):
+    def pay_out(self, table_score, table_real_score, game_count, table_time, games_since_last_shoe):
 
         def last(a, win):
             count = 0
@@ -223,9 +224,9 @@ class Player:
         self.log_output("[table:%s(%s)], score = %s, table_score = %s, bet = %s, bonus = %s @ %s, win_amount = %s, table_balance = %s"
                         % (self.table_id, game_count, self.score, table_score, self.bet, self.bonus, self.bonus_at, win_amount, self.table_balance), show)
 
-        self.report.append({"table":self.table_id,"player":self.id,"game_count":game_count,"table_score":table_score,
-                            "bet":self.bet,"bonus":self.bonus,"bonus_at":self.bonus_at,"win_amount":win_amount,
-                            "table_balance":self.table_balance,"action:":self.action})
+        self.report.append({"table":self.table_id,"player":self.id,"game_count":game_count,"games_since_last_shoe":games_since_last_shoe,"table_score":table_score,
+                            "bet":self.bet,"bonus":self.bonus,"bonus_at":self.bonus_at,"win_amount":win_amount/self.bet,
+                            "table_balance":self.table_balance,"action:":self.action,"player_score":self.real_score,"table_real_score":table_real_score,"win_conviction":self.real_score-table_real_score})
         """
         leave model
         """

@@ -13,7 +13,11 @@ pd.set_option('max_rows', 100)
 pd.set_option('max_columns', 200)
 
 """
-set up table
+Title:     Deck.py
+Author:    Wilson Chan / Saffron Blue Ltd
+Description:   Class definition for black jack table
+Created:       1/1/18
+Last Modified: 8/11/18
 """
 
 report = []
@@ -37,7 +41,7 @@ if __name__ == "__main__":
     print("\033[4mcreating player pool\033[0m")
 
     number_of_sensible = 4
-    number_of_risky = 40
+    number_of_risky = 1
     total_number_of_players = number_of_sensible + number_of_risky
 
     players = []
@@ -73,10 +77,22 @@ if __name__ == "__main__":
         while table.play_round() and table.games<200:
             pass
 
-    df = DataFrame(data=report,columns="table player game_count action table_score bet bonus bonus_at win_amount table_balance leave".split())
+    df = DataFrame(data=report,columns="table player game_count games_since_last_shoe action player_score table_real_score win_conviction bet bonus bonus_at win_amount table_balance leave".split())
     df = df.replace(np.nan, '', regex=True)
 
-    for player in df["player"].unique():
-        print(df[df["player"]==player])
-        exit()
+    """
+    Player_Opt_Play
+    Games_Since_Last_Shoe (done)
+    Win (done)
+    Conviction
+    Bonus (dev)
+    Bet (done)
+    Winnings
+    Balance (done)
+    """
 
+    # for player in df["player"].unique():
+    #     print(df[df["player"]==player])
+    #     exit()
+
+    print(df.head())
